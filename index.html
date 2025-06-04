@@ -1,0 +1,111 @@
+<html>
+  <head>
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com/"
+      crossorigin=""
+    />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Manrope%3Awght%40400%3B500%3B700%3B800&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+    />
+
+    <title>Stitch Design</title>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="data:image/x-icon;base64,"
+    />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body>
+    <div
+      class="relative flex size-full min-h-screen flex-col bg-[#131612] dark group/design-root overflow-x-hidden"
+      style="font-family: Manrope, 'Noto Sans', sans-serif"
+    >
+      <div class="layout-container flex h-full grow flex-col">
+        <div class="px-40 flex flex-1 justify-center py-5">
+          <div
+            class="layout-content-container flex flex-col max-w-[960px] flex-1"
+          >
+            <div class="flex justify-center">
+              <audio
+                id="tradeSound"
+                src="./new-notification-8-352461.mp3"
+                preload="auto"
+              ></audio>
+
+              <div
+                class="flex flex-1 gap-3 max-w-[480px] flex-col items-stretch px-4 py-3"
+              >
+                <button
+                  onclick="playSound('buy')"
+                  class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#8cd279] text-[#131612] text-base font-bold leading-normal tracking-[0.015em] w-full"
+                >
+                  <span class="truncate">Buy</span>
+                </button>
+                <button
+                  onclick="playSound('sell')"
+                  class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-red-100 text-black text-base font-bold leading-normal tracking-[0.015em] w-full"
+                >
+                  <span class="truncate">Sell</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      id="toast"
+      class="fixed top-6 right-6 z-50 hidden min-w-[200px] max-w-sm rounded-lg bg-green-100 px-4 py-3 text-sm font-medium text-black shadow-lg ring-1 ring-black/10 transition-opacity duration-300 ease-in-out"
+    >
+      <span id="toastMessage">Action completed</span>
+    </div>
+  </body>
+</html>
+
+<script>
+  function playSound(action) {
+    const sound = document.getElementById("tradeSound");
+    sound.currentTime = 0; // rewind to start
+    sound.play();
+    showToast(`${action} executed`, action);
+  }
+
+function showToast(message, action) {
+    const toast = document.getElementById("toast");
+    const toastMessage = document.getElementById("toastMessage");
+
+    // Set message with time
+    const now = new Date();
+    const time = now.toLocaleTimeString();
+    toastMessage.textContent = `${message} at ${time}`;
+
+    // Remove any existing color classes
+    toast.classList.remove("bg-green-500", "bg-red-500", "text-white");
+
+    // Add color class based on action
+    if (action.toLowerCase() === "buy") {
+        toast.classList.add("bg-green-500", "text-white");
+    } else if (action.toLowerCase() === "sell") {
+        toast.classList.add("bg-red-500", "text-white");
+    } else {
+        toast.classList.add("bg-gray-700", "text-white");
+    }
+
+    // Show toast
+    toast.classList.remove("hidden", "opacity-0");
+    toast.classList.add("opacity-100");
+
+    setTimeout(() => {
+        toast.classList.add("opacity-0");
+        setTimeout(() => {
+            toast.classList.add("hidden");
+        }, 300);
+    }, 2500);
+}
+</script>
